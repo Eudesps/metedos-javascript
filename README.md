@@ -1,37 +1,34 @@
-# Laboratório do DOM
+# Laboratórios JavaScript
 
-Este projeto tem **intuito educacional**. Ele foi criado para ajudar alunos a compreenderem, de forma simples e visual, alguns conceitos básicos do JavaScript e do DOM.
+Repositório educacional com exemplos interativos para estudar JavaScript, DOM e eventos no navegador.
 
-## Objetivo
+## Projetos
 
-A página mostra como alguns métodos podem modificar os elementos de uma página HTML. Ao clicar nos botões, é possível observar a árvore do DOM mudar e receber uma explicação sobre o que aconteceu.
-
-## Métodos apresentados
-
-- `append()`: adiciona um elemento no final.
-- `prepend()`: adiciona um elemento no início.
-- `before()`: coloca um elemento antes de outro.
-- `after()`: coloca um elemento depois de outro.
-- `replaceWith()`: troca um elemento por outro.
-- `remove()`: remove um elemento da página.
+- **Home:** página inicial com links para todos os laboratórios.
+- **01 - Laboratório do DOM:** manipulação e alteração da árvore de elementos HTML.
+- **02 - Laboratório de Eventos:** identificação e resposta a diferentes eventos da página.
+- **03 - Propagação de Eventos:** demonstrações de propagação, delegação, `stopPropagation()` e `preventDefault()`.
 
 ## Como usar
 
-1. Abra o arquivo `index.html` em um navegador.
-2. Clique em um dos métodos.
-3. Observe a mudança na árvore do DOM.
-4. Leia a explicação exibida na página.
+1. Abra o arquivo `index.html` na raiz do projeto em um navegador.
+2. Escolha um dos laboratórios disponíveis.
+3. Interaja com os exemplos e observe os resultados.
 
-## Tecnologias utilizadas
+Também é possível abrir diretamente o `index.html` de qualquer uma das pastas numeradas.
+
+## Tecnologias
 
 - HTML
 - CSS
 - JavaScript
 
+## Objetivo
+
+Os exemplos foram desenvolvidos para facilitar o aprendizado por meio da prática e da visualização dos conceitos. Eles não representam uma aplicação destinada à produção.
+
 ## Publicação
 
-Este projeto pode ser publicado gratuitamente usando o **GitHub Pages**. Para isso, o arquivo principal deve se chamar `index.html` e estar na branch selecionada para a publicação.
+O projeto pode ser publicado gratuitamente com o GitHub Pages. Basta selecionar a branch e a pasta que contêm os arquivos do projeto nas configurações de publicação do repositório.
 
-## Observação
-
-Este é um projeto para estudo. Os exemplos foram feitos para facilitar o entendimento dos conceitos básicos e não representam uma aplicação completa para produção.
+Desenvolvido por **Eudes**.
