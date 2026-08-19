@@ -1,0 +1,388 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #eef2f7;
+    color: #1f2937;
+}
+
+
+/* CABEÇALHO */
+
+header {
+    background: linear-gradient(135deg, #172554, #2563eb);
+    color: white;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+header h1 {
+    margin: 0 0 10px;
+    font-size: 36px;
+}
+
+header p {
+    margin: 0;
+    font-size: 17px;
+}
+
+
+/* MONITOR */
+
+.monitor {
+    width: 90%;
+    max-width: 1000px;
+    margin: 25px auto;
+    padding: 25px;
+
+    background-color: #111827;
+    color: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.monitor h2 {
+    margin-top: 0;
+}
+
+.monitor-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+}
+
+.monitor-grid div {
+    background-color: #1f2937;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+.monitor-grid span {
+    display: block;
+    color: #9ca3af;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.monitor-grid strong {
+    font-size: 17px;
+    color: #60a5fa;
+}
+
+
+/* CARDS */
+
+.card {
+    width: 90%;
+    max-width: 1000px;
+
+    margin: 25px auto;
+    padding: 30px;
+
+    background-color: white;
+
+    border-radius: 15px;
+
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+
+    position: relative;
+}
+
+.numero {
+    display: inline-block;
+
+    background-color: #2563eb;
+    color: white;
+
+    padding: 6px 12px;
+
+    border-radius: 20px;
+
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card h2 {
+    margin-top: 12px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    line-height: 1.6;
+}
+
+
+/* ÁREA DE EXEMPLO */
+
+.area-exemplo {
+    text-align: center;
+
+    background-color: #f1f5f9;
+
+    padding: 25px;
+
+    border-radius: 12px;
+}
+
+
+/* BOTÕES */
+
+button {
+    border: none;
+
+    background-color: #2563eb;
+    color: white;
+
+    padding: 12px 20px;
+
+    border-radius: 8px;
+
+    font-size: 15px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+button:hover {
+    transform: translateY(-2px);
+    background-color: #1d4ed8;
+}
+
+button:active {
+    transform: scale(0.96);
+}
+
+
+/* CÓDIGO */
+
+.codigo {
+    margin: 20px 0;
+
+    padding: 18px;
+
+    background-color: #111827;
+
+    color: white;
+
+    border-radius: 10px;
+
+    font-family: monospace;
+
+    font-size: 16px;
+}
+
+.amarelo {
+    color: #facc15;
+}
+
+.pequeno {
+    font-size: 13px;
+    overflow-x: auto;
+}
+
+
+/* RESULTADOS */
+
+#mensagemEvento,
+#resultadoListener,
+#resultadoClick,
+#resultadoMouse,
+#resultadoInline,
+#resultadoModerno {
+    margin-top: 20px;
+
+    font-weight: bold;
+
+    color: #2563eb;
+}
+
+
+/* BOTÕES DE CLICK */
+
+.botoes {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+
+    margin: 25px 0;
+}
+
+
+/* INPUT */
+
+input {
+    width: 100%;
+
+    padding: 14px;
+
+    border: 2px solid #cbd5e1;
+
+    border-radius: 8px;
+
+    font-size: 16px;
+
+    outline: none;
+}
+
+input:focus {
+    border-color: #2563eb;
+}
+
+
+/* TECLA */
+
+.tecla-display {
+    margin-top: 20px;
+
+    padding: 20px;
+
+    background-color: #f1f5f9;
+
+    border-radius: 10px;
+
+    text-align: center;
+}
+
+.tecla-display strong {
+    display: block;
+
+    margin-top: 10px;
+
+    font-size: 30px;
+
+    color: #2563eb;
+}
+
+
+/* MOUSEOVER */
+
+#areaMouse {
+    height: 150px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+    align-items: center;
+
+    gap: 10px;
+
+    background-color: #e0f2fe;
+
+    border: 3px dashed #0284c7;
+
+    border-radius: 12px;
+
+    cursor: pointer;
+
+    transition: 0.3s;
+}
+
+#areaMouse span {
+    font-size: 35px;
+}
+
+
+/* COMPARAÇÃO */
+
+.comparacao {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 20px;
+}
+
+.exemplo {
+    padding: 20px;
+
+    background-color: #f8fafc;
+
+    border-radius: 12px;
+
+    border: 2px solid #e2e8f0;
+}
+
+.exemplo h3 {
+    margin-top: 0;
+}
+
+
+/* DESAFIO */
+
+.desafio {
+    border: 3px solid #2563eb;
+}
+
+.desafio-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-top: 20px;
+}
+
+.desafio-btn {
+    background-color: #475569;
+}
+
+#resultadoDesafio {
+    margin-top: 20px;
+
+    padding: 18px;
+
+    text-align: center;
+
+    background-color: #f1f5f9;
+
+    border-radius: 10px;
+
+    font-weight: bold;
+}
+
+
+/* FOOTER */
+
+footer {
+    margin-top: 40px;
+
+    padding: 25px;
+
+    background-color: #111827;
+
+    color: white;
+
+    text-align: center;
+}
+
+
+/* RESPONSIVIDADE */
+
+@media (max-width: 700px) {
+
+    .monitor-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .comparacao {
+        grid-template-columns: 1fr;
+    }
+
+    .desafio-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .botoes {
+        flex-direction: column;
+    }
+
+}

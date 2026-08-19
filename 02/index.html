@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratório de Eventos JavaScript</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>📡 Laboratório de Eventos</h1>
+
+        <p>
+            Interaja com a página e observe o JavaScript respondendo aos eventos.
+        </p>
+    </header>
+
+
+    <!-- MONITOR DE EVENTOS -->
+
+    <section class="monitor">
+
+        <h2>📡 Monitor de Eventos</h2>
+
+        <div class="monitor-grid">
+
+            <div>
+                <span>Evento</span>
+                <strong id="evento">---</strong>
+            </div>
+
+            <div>
+                <span>Elemento</span>
+                <strong id="elemento">---</strong>
+            </div>
+
+            <div>
+                <span>Tecla</span>
+                <strong id="tecla">---</strong>
+            </div>
+
+            <div>
+                <span>Status</span>
+                <strong id="status">Aguardando...</strong>
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 1 - O QUE É UM EVENTO -->
+
+    <section class="card">
+
+        <span class="numero">01</span>
+
+        <h2>O que é um evento?</h2>
+
+        <p>
+            Um evento é uma ação que acontece na página.
+            O JavaScript pode perceber essa ação e executar uma função.
+        </p>
+
+        <div class="area-exemplo">
+
+            <button id="botaoEvento">
+                Clique aqui
+            </button>
+
+            <p id="mensagemEvento">
+                Aguardando um clique...
+            </p>
+
+        </div>
+
+    </section>
+
+
+    <!-- 2 - ADD EVENT LISTENER -->
+
+    <section class="card">
+
+        <span class="numero">02</span>
+
+        <h2>addEventListener()</h2>
+
+        <p>
+            O <strong>addEventListener()</strong> permite que o JavaScript
+            fique "escutando" um evento.
+        </p>
+
+        <div class="codigo">
+
+            <span>elemento</span>
+            <span>.addEventListener(</span>
+            <span class="amarelo">"click"</span>
+            <span>, funcao);</span>
+
+        </div>
+
+        <button id="botaoListener">
+            Testar addEventListener
+        </button>
+
+        <p id="resultadoListener">
+            Nenhum evento detectado.
+        </p>
+
+    </section>
+
+
+    <!-- 3 - CLICK -->
+
+    <section class="card">
+
+        <span class="numero">03</span>
+
+        <h2>Evento: click 🖱️</h2>
+
+        <p>
+            O evento <strong>click</strong> acontece quando clicamos
+            em um elemento.
+        </p>
+
+        <div class="botoes">
+
+            <button class="botaoClick" data-nome="Botão 1">
+                Botão 1
+            </button>
+
+            <button class="botaoClick" data-nome="Botão 2">
+                Botão 2
+            </button>
+
+            <button class="botaoClick" data-nome="Botão 3">
+                Botão 3
+            </button>
+
+        </div>
+
+        <p id="resultadoClick">
+            Clique em um dos botões.
+        </p>
+
+    </section>
+
+
+    <!-- 4 - KEYDOWN -->
+
+    <section class="card">
+
+        <span class="numero">04</span>
+
+        <h2>Evento: keydown ⌨️</h2>
+
+        <p>
+            O evento <strong>keydown</strong> acontece quando uma tecla
+            do teclado é pressionada.
+        </p>
+
+        <input
+            type="text"
+            id="campoTeclado"
+            placeholder="Digite alguma coisa..."
+        >
+
+        <div class="tecla-display">
+
+            <span>Última tecla pressionada:</span>
+
+            <strong id="ultimaTecla">
+                ---
+            </strong>
+
+        </div>
+
+    </section>
+
+
+    <!-- 5 - MOUSEOVER -->
+
+    <section class="card">
+
+        <span class="numero">05</span>
+
+        <h2>Evento: mouseover 🖱️</h2>
+
+        <p>
+            O evento <strong>mouseover</strong> acontece quando
+            o mouse entra na área de um elemento.
+        </p>
+
+        <div id="areaMouse">
+
+            <span>🖱️</span>
+
+            <strong>
+                Passe o mouse aqui
+            </strong>
+
+        </div>
+
+        <p id="resultadoMouse">
+            O mouse ainda não entrou na área.
+        </p>
+
+    </section>
+
+
+    <!-- 6 - INLINE X ADD EVENT LISTENER -->
+
+    <section class="card">
+
+        <span class="numero">06</span>
+
+        <h2>Inline × addEventListener()</h2>
+
+        <p>
+            Existem diferentes formas de adicionar eventos aos elementos.
+        </p>
+
+        <div class="comparacao">
+
+            <div class="exemplo">
+
+                <h3>Evento Inline</h3>
+
+                <div class="codigo pequeno">
+
+                    &lt;button onclick="minhaFuncao()"&gt;
+
+                </div>
+
+                <button onclick="eventoInline()">
+                    Testar Inline
+                </button>
+
+                <p id="resultadoInline">
+                    Aguardando...
+                </p>
+
+            </div>
+
+
+            <div class="exemplo">
+
+                <h3>addEventListener()</h3>
+
+                <div class="codigo pequeno">
+
+                    botao.addEventListener("click", minhaFuncao);
+
+                </div>
+
+                <button id="botaoModerno">
+                    Testar moderno
+                </button>
+
+                <p id="resultadoModerno">
+                    Aguardando...
+                </p>
+
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <!-- 7 - DESAFIO -->
+
+    <section class="card desafio">
+
+        <span class="numero">07</span>
+
+        <h2>🎯 Desafio dos Eventos</h2>
+
+        <p>
+            Qual evento você usaria para cada situação?
+        </p>
+
+        <div class="desafio-grid">
+
+            <button class="desafio-btn" data-evento="click">
+                🖱️ Clicar em um botão
+            </button>
+
+            <button class="desafio-btn" data-evento="keydown">
+                ⌨️ Pressionar uma tecla
+            </button>
+
+            <button class="desafio-btn" data-evento="mouseover">
+                🖱️ Passar o mouse
+            </button>
+
+        </div>
+
+        <div id="resultadoDesafio">
+            Escolha uma situação.
+        </div>
+
+    </section>
+
+
+    <footer>
+
+        <p>
+            JavaScript • Eventos • DOM
+        </p>
+
+    </footer>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
