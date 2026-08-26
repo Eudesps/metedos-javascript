@@ -1,0 +1,818 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Laboratório de Eventos</title>
+
+    <style>
+
+        /* =========================
+           ESTILO GERAL
+        ========================= */
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #f4f6f8;
+            color: #333;
+        }
+
+        header {
+            background-color: #4f46e5;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin: 0;
+        }
+
+        header p {
+            margin-bottom: 0;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: auto;
+            padding: 30px;
+        }
+
+        .introducao {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .card h2 {
+            margin-top: 0;
+            color: #4f46e5;
+        }
+
+        button {
+            border: none;
+            padding: 12px 18px;
+            border-radius: 8px;
+            cursor: pointer;
+            background-color: #4f46e5;
+            color: white;
+            font-size: 15px;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background-color: #3730a3;
+        }
+
+        .resultado {
+            margin-top: 15px;
+            padding: 12px;
+            background-color: #eef2ff;
+            border-left: 5px solid #4f46e5;
+            border-radius: 5px;
+            min-height: 45px;
+        }
+
+
+        /* =========================
+           EVENTOS DE STORAGE
+        ========================= */
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+
+
+        /* =========================
+           EVENTOS DE TOUCH
+        ========================= */
+
+        #areaTouch {
+            background-color: #fef3c7;
+            padding: 40px 20px;
+            margin-top: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            user-select: none;
+        }
+
+
+        /* =========================
+           EVENTOS DE PONTEIRO
+        ========================= */
+
+        #areaPonteiro {
+            background-color: #dbeafe;
+            padding: 40px 20px;
+            margin-top: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+
+        /* =========================
+           EVENTOS DE ANIMAÇÃO
+        ========================= */
+
+        #bola {
+            width: 70px;
+            height: 70px;
+            background-color: #ef4444;
+            border-radius: 50%;
+            margin: 20px auto;
+        }
+
+        .animar {
+            animation: pular 1s infinite;
+        }
+
+        @keyframes pular {
+
+            0% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-80px);
+            }
+
+            100% {
+                transform: translateY(0);
+            }
+
+        }
+
+
+        /* =========================
+           EVENTOS DE TRANSIÇÃO
+        ========================= */
+
+        #caixaTransicao {
+            width: 100px;
+            height: 100px;
+            background-color: #22c55e;
+            margin-top: 20px;
+            border-radius: 10px;
+
+            transition: transform 1s;
+        }
+
+        .mover {
+            transform: translateX(150px);
+        }
+
+
+        /* =========================
+           EVENTOS DE REDE
+        ========================= */
+
+        #statusRede {
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 18px;
+            background-color: #dcfce7;
+        }
+
+
+        /* =========================
+           EVENTOS DE IMPRESSÃO
+        ========================= */
+
+        #mensagemImpressao {
+            padding: 15px;
+            background-color: #f3e8ff;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+
+
+        /* =========================
+           RESPONSIVIDADE
+        ========================= */
+
+        @media (max-width: 600px) {
+
+            main {
+                padding: 15px;
+            }
+
+            #caixaTransicao {
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .mover {
+                transform: translateX(70px);
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+    <header>
+
+        <h1>⚡ Laboratório de Eventos</h1>
+
+        <p>
+            Faça uma ação e observe qual evento acontece!
+        </p>
+
+    </header>
+
+
+    <main>
+
+        <section class="introducao">
+
+            <h2>O que é um evento?</h2>
+
+            <p>
+                Um evento é algo que acontece na página.
+            </p>
+
+            <p>
+                O JavaScript pode perceber esse acontecimento e
+                executar uma ação.
+            </p>
+
+        </section>
+
+
+
+        <div class="grid">
+
+
+            <!-- STORAGE -->
+
+            <section class="card">
+
+                <h2>💾 Storage</h2>
+
+                <p>
+                    Salve uma informação no navegador.
+                </p>
+
+                <input
+                    type="text"
+                    id="nome"
+                    placeholder="Digite seu nome"
+                >
+
+                <button id="salvar">
+                    Salvar nome
+                </button>
+
+                <button id="mostrar">
+                    Mostrar nome salvo
+                </button>
+
+                <div class="resultado" id="resultadoStorage">
+
+                    Nenhuma ação realizada.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- TOUCH -->
+
+            <section class="card">
+
+                <h2>👆 Touch</h2>
+
+                <p>
+                    Toque ou clique na área abaixo.
+                </p>
+
+                <div id="areaTouch">
+
+                    👆 Toque aqui!
+
+                </div>
+
+                <div class="resultado" id="resultadoTouch">
+
+                    Aguardando toque...
+
+                </div>
+
+            </section>
+
+
+
+            <!-- PONTEIRO -->
+
+            <section class="card">
+
+                <h2>🖱️ Ponteiro</h2>
+
+                <p>
+                    Passe o mouse pela área.
+                </p>
+
+                <div id="areaPonteiro">
+
+                    Mova o ponteiro aqui!
+
+                </div>
+
+                <div class="resultado" id="resultadoPonteiro">
+
+                    Aguardando...
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ANIMAÇÃO -->
+
+            <section class="card">
+
+                <h2>🎬 Animação</h2>
+
+                <p>
+                    Inicie uma animação CSS.
+                </p>
+
+                <div id="bola"></div>
+
+                <button id="botaoAnimacao">
+
+                    Iniciar animação
+
+                </button>
+
+                <div class="resultado" id="resultadoAnimacao">
+
+                    A animação ainda não começou.
+
+                </div>
+
+            </section>
+
+
+
+            <!-- TRANSIÇÃO -->
+
+            <section class="card">
+
+                <h2>➡️ Transição</h2>
+
+                <p>
+                    Mova a caixa.
+                </p>
+
+                <div id="caixaTransicao"></div>
+
+                <button id="botaoTransicao">
+
+                    Mover caixa
+
+                </button>
+
+                <div class="resultado" id="resultadoTransicao">
+
+                    Aguardando transição...
+
+                </div>
+
+            </section>
+
+
+
+            <!-- REDE -->
+
+            <section class="card">
+
+                <h2>🌐 Rede</h2>
+
+                <p>
+                    Veja o estado da conexão.
+                </p>
+
+                <div id="statusRede">
+
+                    Verificando conexão...
+
+                </div>
+
+                <div class="resultado" id="resultadoRede">
+
+                    Aguardando alteração...
+
+                </div>
+
+            </section>
+
+
+
+            <!-- IMPRESSÃO -->
+
+            <section class="card">
+
+                <h2>🖨️ Impressão</h2>
+
+                <p>
+                    Clique no botão para abrir a impressão.
+                </p>
+
+                <button id="botaoImprimir">
+
+                    Imprimir página
+
+                </button>
+
+                <div id="mensagemImpressao">
+
+                    A página ainda não está sendo impressa.
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+    </main>
+
+
+
+    <script>
+
+        /* =========================
+           STORAGE
+        ========================= */
+
+        const nome = document.getElementById("nome");
+
+        const salvar = document.getElementById("salvar");
+
+        const mostrar = document.getElementById("mostrar");
+
+        const resultadoStorage =
+            document.getElementById("resultadoStorage");
+
+
+        salvar.addEventListener("click", function () {
+
+            localStorage.setItem(
+                "nomeUsuario",
+                nome.value
+            );
+
+            resultadoStorage.textContent =
+                "Informação salva no navegador!";
+
+        });
+
+
+        mostrar.addEventListener("click", function () {
+
+            const nomeSalvo =
+                localStorage.getItem("nomeUsuario");
+
+
+            if (nomeSalvo) {
+
+                resultadoStorage.textContent =
+                    "Nome salvo: " + nomeSalvo;
+
+            }
+
+            else {
+
+                resultadoStorage.textContent =
+                    "Nenhum nome foi salvo.";
+
+            }
+
+        });
+
+
+
+        /* =========================
+           EVENTO STORAGE
+        ========================= */
+
+        window.addEventListener("storage", function () {
+
+            resultadoStorage.textContent =
+                "O localStorage foi alterado!";
+
+        });
+
+
+
+        /* =========================
+           TOUCH
+        ========================= */
+
+        const areaTouch =
+            document.getElementById("areaTouch");
+
+        const resultadoTouch =
+            document.getElementById("resultadoTouch");
+
+
+        areaTouch.addEventListener("touchstart", function () {
+
+            resultadoTouch.textContent =
+                "touchstart: começou o toque!";
+
+        });
+
+
+        areaTouch.addEventListener("touchmove", function () {
+
+            resultadoTouch.textContent =
+                "touchmove: o dedo está se movendo!";
+
+        });
+
+
+        areaTouch.addEventListener("touchend", function () {
+
+            resultadoTouch.textContent =
+                "touchend: o toque terminou!";
+
+        });
+
+
+        /* =========================
+           PONTEIRO
+        ========================= */
+
+        const areaPonteiro =
+            document.getElementById("areaPonteiro");
+
+        const resultadoPonteiro =
+            document.getElementById("resultadoPonteiro");
+
+
+        areaPonteiro.addEventListener("pointerdown", function () {
+
+            resultadoPonteiro.textContent =
+                "pointerdown: ponteiro pressionado!";
+
+        });
+
+
+        areaPonteiro.addEventListener("pointerup", function () {
+
+            resultadoPonteiro.textContent =
+                "pointerup: ponteiro solto!";
+
+        });
+
+
+        areaPonteiro.addEventListener("pointermove", function () {
+
+            resultadoPonteiro.textContent =
+                "pointermove: ponteiro se movendo!";
+
+        });
+
+
+        areaPonteiro.addEventListener("pointerenter", function () {
+
+            resultadoPonteiro.textContent =
+                "pointerenter: ponteiro entrou na área!";
+
+        });
+
+
+        areaPonteiro.addEventListener("pointerleave", function () {
+
+            resultadoPonteiro.textContent =
+                "pointerleave: ponteiro saiu da área!";
+
+        });
+
+
+
+        /* =========================
+           ANIMAÇÃO
+        ========================= */
+
+        const bola =
+            document.getElementById("bola");
+
+        const botaoAnimacao =
+            document.getElementById("botaoAnimacao");
+
+        const resultadoAnimacao =
+            document.getElementById("resultadoAnimacao");
+
+
+        botaoAnimacao.addEventListener("click", function () {
+
+            bola.classList.add("animar");
+
+        });
+
+
+        bola.addEventListener("animationstart", function () {
+
+            resultadoAnimacao.textContent =
+                "animationstart: animação começou!";
+
+        });
+
+
+        bola.addEventListener("animationiteration", function () {
+
+            resultadoAnimacao.textContent =
+                "animationiteration: animação repetiu!";
+
+        });
+
+
+        bola.addEventListener("animationend", function () {
+
+            resultadoAnimacao.textContent =
+                "animationend: animação terminou!";
+
+        });
+
+
+
+        /* =========================
+           TRANSIÇÃO
+        ========================= */
+
+        const caixaTransicao =
+            document.getElementById("caixaTransicao");
+
+        const botaoTransicao =
+            document.getElementById("botaoTransicao");
+
+        const resultadoTransicao =
+            document.getElementById("resultadoTransicao");
+
+
+        botaoTransicao.addEventListener("click", function () {
+
+            caixaTransicao.classList.toggle("mover");
+
+        });
+
+
+        caixaTransicao.addEventListener(
+            "transitionstart",
+            function () {
+
+                resultadoTransicao.textContent =
+                    "transitionstart: transição começou!";
+
+            }
+        );
+
+
+        caixaTransicao.addEventListener(
+            "transitionend",
+            function () {
+
+                resultadoTransicao.textContent =
+                    "transitionend: transição terminou!";
+
+            }
+        );
+
+
+
+        /* =========================
+           REDE
+        ========================= */
+
+        const statusRede =
+            document.getElementById("statusRede");
+
+        const resultadoRede =
+            document.getElementById("resultadoRede");
+
+
+        function verificarRede() {
+
+            if (navigator.onLine) {
+
+                statusRede.textContent =
+                    "🟢 Você está online!";
+
+            }
+
+            else {
+
+                statusRede.textContent =
+                    "🔴 Você está offline!";
+
+            }
+
+        }
+
+
+        verificarRede();
+
+
+        window.addEventListener("online", function () {
+
+            statusRede.textContent =
+                "🟢 A internet voltou!";
+
+            resultadoRede.textContent =
+                "Evento online disparado!";
+
+        });
+
+
+        window.addEventListener("offline", function () {
+
+            statusRede.textContent =
+                "🔴 Você ficou sem internet!";
+
+            resultadoRede.textContent =
+                "Evento offline disparado!";
+
+        });
+
+
+
+        /* =========================
+           IMPRESSÃO
+        ========================= */
+
+        const botaoImprimir =
+            document.getElementById("botaoImprimir");
+
+        const mensagemImpressao =
+            document.getElementById("mensagemImpressao");
+
+
+        botaoImprimir.addEventListener("click", function () {
+
+            window.print();
+
+        });
+
+
+        window.addEventListener(
+            "beforeprint",
+            function () {
+
+                mensagemImpressao.textContent =
+                    "beforeprint: a página será impressa!";
+
+            }
+        );
+
+
+        window.addEventListener(
+            "afterprint",
+            function () {
+
+                mensagemImpressao.textContent =
+                    "afterprint: a impressão terminou!";
+
+            }
+        );
+
+    </script>
+
+</body>
+</html>
