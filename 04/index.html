@@ -643,7 +643,28 @@
 
         botaoAnimacao.addEventListener("click", function () {
 
-            bola.classList.add("animar");
+            const animacaoAtiva =
+                bola.classList.toggle("animar");
+
+            if (animacaoAtiva) {
+
+                botaoAnimacao.textContent =
+                    "Parar animação";
+
+                resultadoAnimacao.textContent =
+                    "A animação está em execução.";
+
+            }
+
+            else {
+
+                botaoAnimacao.textContent =
+                    "Iniciar animação";
+
+                resultadoAnimacao.textContent =
+                    "A animação foi parada.";
+
+            }
 
         });
 
