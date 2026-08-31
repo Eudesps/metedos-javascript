@@ -9,6 +9,7 @@ Repositório educacional com exemplos interativos para estudar JavaScript, DOM e
 - **02 - Laboratório de Eventos:** identificação e resposta a diferentes eventos da página.
 - **03 - Propagação de Eventos:** demonstrações de propagação, delegação, `stopPropagation()` e `preventDefault()`.
 - **04 - Compreender como outros eventos podem ampliar a capacidade de controle dos eventos:** exemplos interativos de eventos de storage, touch, ponteiro, animação, rede e impressão.
+- **05 - Navegação e Manipulação da Estrutura DOM:** exploração da árvore do DOM e prática de navegação e manipulação de elementos.
 
 ## Como usar
 

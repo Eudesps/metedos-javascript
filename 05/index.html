@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Explorador do DOM</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #eef2ff;
+            color: #1e293b;
+        }
+
+        /* CABEÇALHO */
+
+        header {
+            background: #4f46e5;
+            color: white;
+            text-align: center;
+            padding: 25px;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        /* CONTEÚDO */
+
+        .container {
+            width: 90%;
+            max-width: 1100px;
+            margin: 30px auto;
+        }
+
+        .instrucoes {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin-bottom: 25px;
+            box-shadow: 0 3px 10px #0002;
+        }
+
+        .instrucoes strong {
+            color: #4f46e5;
+        }
+
+        .area {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 3px 10px #0002;
+        }
+
+        .card h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+
+        /* ========================= */
+        /* ÁRVORE DO DOM              */
+        /* ========================= */
+
+        .arvore {
+            padding: 20px 5px;
+            text-align: center;
+        }
+
+        .no {
+            display: inline-block;
+            padding: 12px 18px;
+            border: 3px solid #64748b;
+            border-radius: 8px;
+            background: #e2e8f0;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .no:hover {
+            transform: scale(1.05);
+        }
+
+        .no.selecionado {
+            background: #4f46e5;
+            color: white;
+            border-color: #3730a3;
+            transform: scale(1.08);
+        }
+
+        .no.destacado {
+            background: #facc15;
+            border-color: #eab308;
+            color: #713f12;
+
+            animation: pulsar 0.8s infinite alternate;
+        }
+
+        @keyframes pulsar {
+
+            from {
+                transform: scale(1);
+            }
+
+            to {
+                transform: scale(1.12);
+            }
+
+        }
+
+
+        /* LINHAS DA ÁRVORE */
+
+        .filhos {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 35px;
+            position: relative;
+        }
+
+        .filhos::before {
+            content: "";
+            position: absolute;
+            width: 70%;
+            height: 2px;
+            background: #94a3b8;
+            top: -18px;
+            left: 15%;
+        }
+
+        .filho {
+            position: relative;
+        }
+
+        .filho::before {
+            content: "";
+            position: absolute;
+            width: 2px;
+            height: 18px;
+            background: #94a3b8;
+            top: -18px;
+            left: 50%;
+        }
+
+        .subfilhos {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 35px;
+            position: relative;
+        }
+
+        .subfilhos::before {
+            content: "";
+            position: absolute;
+            width: 70%;
+            height: 2px;
+            background: #94a3b8;
+            top: -18px;
+            left: 15%;
+        }
+
+
+        /* SETAS DE EXPLICAÇÃO */
+
+        .seta-navegacao {
+            font-size: 30px;
+            margin: 15px 0;
+            color: #4f46e5;
+            font-weight: bold;
+        }
+
+
+        /* ========================= */
+        /* PROPRIEDADES               */
+        /* ========================= */
+
+        .propriedades {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .propriedades button {
+            border: none;
+            border-radius: 8px;
+            padding: 14px 8px;
+            background: #e0e7ff;
+            color: #3730a3;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .propriedades button:hover {
+            background: #c7d2fe;
+            transform: translateY(-2px);
+        }
+
+        .propriedades button:last-child {
+            grid-column: span 2;
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        /* ========================= */
+        /* RESULTADO                  */
+        /* ========================= */
+
+        .resultado {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 10px;
+            background: #f8fafc;
+            border-left: 6px solid #4f46e5;
+            min-height: 180px;
+        }
+
+        .resultado h3 {
+            margin-top: 0;
+            color: #4f46e5;
+        }
+
+        .codigo {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 6px;
+            background: #1e293b;
+            color: #f8fafc;
+            font-family: monospace;
+        }
+
+
+        /* ========================= */
+        /* TEXTCONTENT                */
+        /* ========================= */
+
+        .textcontent {
+            margin-top: 25px;
+            padding: 15px;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+
+        .textcontent input {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 2px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        .textcontent button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            background: #16a34a;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .textcontent button:hover {
+            background: #15803d;
+        }
+
+
+        /* RESET */
+
+        .reset {
+            display: block;
+            margin: 25px auto;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            background: #64748b;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .reset:hover {
+            background: #475569;
+        }
+
+
+        /* RESPONSIVIDADE */
+
+        @media (max-width: 750px) {
+
+            .area {
+                grid-template-columns: 1fr;
+            }
+
+            .filhos,
+            .subfilhos {
+                flex-wrap: wrap;
+            }
+
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+
+    <!-- CABEÇALHO -->
+
+    <header>
+
+        <h1>Navegação e Manipulação da Estrutura DOM (Aula 30)</h1>
+
+        <p>
+            Clique nos elementos e descubra como navegar pela árvore do DOM!
+        </p>
+
+    </header>
+
+
+    <main class="container">
+
+
+        <!-- INSTRUÇÕES -->
+
+        <div class="instrucoes">
+
+            👆 <strong>1º</strong> Clique em um elemento da árvore.
+
+            <br><br>
+
+            🔎 <strong>2º</strong> Escolha uma propriedade.
+
+            <br><br>
+
+            💡 Observe qual elemento foi encontrado!
+
+        </div>
+
+
+        <div class="area">
+
+
+            <!-- ============================= -->
+            <!-- ÁRVORE                        -->
+            <!-- ============================= -->
+
+            <section class="card">
+
+                <h2>🌳 Árvore do DOM</h2>
+
+
+                <div class="arvore">
+
+
+                    <!-- PAI -->
+
+                    <div>
+
+                        <div
+                            class="no"
+                            id="container">
+                            CONTAINER
+                        </div>
+
+
+                        <!-- FILHOS DO CONTAINER -->
+
+                        <div class="filhos">
+
+
+                            <!-- P1 -->
+
+                            <div class="filho">
+
+                                <div
+                                    class="no"
+                                    id="p1">
+                                    P1
+                                </div>
+
+
+                                <!-- FILHOS DE P1 -->
+
+                                <div class="subfilhos">
+
+
+                                    <div
+                                        class="no"
+                                        id="span">
+                                        SPAN
+                                    </div>
+
+
+                                    <div
+                                        class="no"
+                                        id="texto">
+                                        TEXTO
+                                    </div>
+
+
+                                    <div
+                                        class="no"
+                                        id="botao">
+                                        BUTTON
+                                    </div>
+
+
+                                </div>
+
+                            </div>
+
+
+                            <!-- P2 -->
+
+                            <div class="filho">
+
+                                <div
+                                    class="no"
+                                    id="p2">
+                                    P2
+                                </div>
+
+                            </div>
+
+
+                            <!-- P3 -->
+
+                            <div class="filho">
+
+                                <div
+                                    class="no"
+                                    id="p3">
+                                    P3
+                                </div>
+
+                            </div>
+
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- RESULTADO -->
+
+                <div
+                    class="resultado"
+                    id="resultado">
+
+                    <h3>🔎 Resultado</h3>
+
+                    <p>
+                        Selecione um elemento da árvore para começar.
+                    </p>
+
+                </div>
+
+            </section>
+
+
+            <!-- ============================= -->
+            <!-- PROPRIEDADES                   -->
+            <!-- ============================= -->
+
+            <section class="card">
+
+                <h2>🧭 Navegação</h2>
+
+                <p style="text-align:center;">
+
+                    Escolha uma propriedade:
+
+                </p>
+
+
+                <div class="propriedades">
+
+
+                    <button
+                        onclick="usarPropriedade('parentNode')">
+
+                        parentNode
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('childNodes')">
+
+                        childNodes
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('firstChild')">
+
+                        firstChild
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('lastChild')">
+
+                        lastChild
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('nextSibling')">
+
+                        nextSibling
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('previousSibling')">
+
+                        previousSibling
+
+                    </button>
+
+
+                    <button
+                        onclick="usarPropriedade('textContent')">
+
+                        textContent
+
+                    </button>
+
+
+                </div>
+
+
+                <!-- TESTE TEXTCONTENT -->
+
+                <div class="textcontent">
+
+                    <strong>✏️ Experimente o textContent</strong>
+
+                    <p>
+                        Digite um novo texto para o SPAN:
+                    </p>
+
+                    <input
+                        type="text"
+                        id="novoTexto"
+                        placeholder="Ex: Olá, DOM!">
+
+                    <button onclick="alterarTexto()">
+
+                        Alterar texto do SPAN
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+        </div>
+
+
+        <!-- RESET -->
+
+        <button
+            class="reset"
+            onclick="resetar()">
+
+            🔄 Reiniciar demonstração
+
+        </button>
+
+
+    </main>
+
+
+    <script>
+
+
+        /* ================================= */
+        /* ELEMENTO SELECIONADO              */
+        /* ================================= */
+
+        let selecionado = null;
+
+
+        /* Todos os nós que o aluno pode clicar */
+
+        const elementos =
+            document.querySelectorAll(".no");
+
+
+        /* ================================= */
+        /* SELECIONAR ELEMENTO               */
+        /* ================================= */
+
+        elementos.forEach(function(elemento) {
+
+
+            elemento.addEventListener("click", function(event) {
+
+
+                /* Impede que o clique afete outro elemento */
+
+                event.stopPropagation();
+
+
+                /* Remove seleção anterior */
+
+                elementos.forEach(function(el) {
+
+                    el.classList.remove("selecionado");
+
+                });
+
+
+                /* Remove destaques anteriores */
+
+                elementos.forEach(function(el) {
+
+                    el.classList.remove("destacado");
+
+                });
+
+
+                /* Seleciona o elemento */
+
+                elemento.classList.add("selecionado");
+
+
+                selecionado = elemento;
+
+
+                mostrarResultado(
+
+                    "Elemento selecionado",
+
+                    "Você selecionou: <strong>" +
+                    nomeDoElemento(elemento) +
+                    "</strong>."
+
+                );
+
+            });
+
+        });
+
+
+        /* ================================= */
+        /* NOME DO ELEMENTO                  */
+        /* ================================= */
+
+        function nomeDoElemento(elemento) {
+
+
+            if (elemento.id === "container") {
+
+                return "CONTAINER";
+
+            }
+
+
+            if (elemento.id === "p1") {
+
+                return "P1";
+
+            }
+
+
+            if (elemento.id === "p2") {
+
+                return "P2";
+
+            }
+
+
+            if (elemento.id === "p3") {
+
+                return "P3";
+
+            }
+
+
+            if (elemento.id === "span") {
+
+                return "SPAN";
+
+            }
+
+
+            if (elemento.id === "texto") {
+
+                return "TEXTO";
+
+            }
+
+
+            if (elemento.id === "botao") {
+
+                return "BUTTON";
+
+            }
+
+
+            return "ELEMENTO";
+
+        }
+
+
+        /* ================================= */
+        /* USAR PROPRIEDADE                  */
+        /* ================================= */
+
+        function usarPropriedade(propriedade) {
+
+
+            /* Verifica se algum elemento foi selecionado */
+
+            if (selecionado === null) {
+
+
+                mostrarResultado(
+
+                    "⚠️ Primeiro selecione um elemento",
+
+                    "Clique em um elemento da árvore antes de escolher uma propriedade."
+
+                );
+
+
+                return;
+
+            }
+
+
+            /* Remove destaques anteriores */
+
+            elementos.forEach(function(el) {
+
+                el.classList.remove("destacado");
+
+            });
+
+
+            /* ================================= */
+            /* parentNode                         */
+            /* ================================= */
+
+            if (propriedade === "parentNode") {
+
+
+                const pai =
+                    obterPaiDOM(selecionado);
+
+
+                if (pai === null) {
+
+                    mostrarResultado(
+
+                        "parentNode",
+
+                        "Esse elemento não possui um pai dentro da árvore demonstrada."
+
+                    );
+
+                    return;
+
+                }
+
+
+                pai.classList.add("destacado");
+
+
+                mostrarResultado(
+
+                    "parentNode",
+
+                    "<strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> procurou seu elemento pai.",
+
+                    "element.parentNode → " +
+                    nomeDoElemento(pai)
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* childNodes                         */
+            /* ================================= */
+
+            else if (propriedade === "childNodes") {
+
+
+                const filhos =
+                    obterFilhosDOM(selecionado);
+
+
+                if (filhos.length === 0) {
+
+
+                    mostrarResultado(
+
+                        "childNodes",
+
+                        "<strong>" +
+                        nomeDoElemento(selecionado) +
+                        "</strong> não possui filhos."
+
+                    );
+
+
+                    return;
+
+                }
+
+
+                filhos.forEach(function(filho) {
+
+                    filho.classList.add("destacado");
+
+                });
+
+
+                mostrarResultado(
+
+                    "childNodes",
+
+                    "<strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> possui " +
+                    filhos.length +
+                    " filho(s).",
+
+                    "element.childNodes"
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* firstChild                         */
+            /* ================================= */
+
+            else if (propriedade === "firstChild") {
+
+
+                const primeiro =
+                    obterFilhosDOM(selecionado)[0];
+
+
+                if (!primeiro) {
+
+
+                    mostrarResultado(
+
+                        "firstChild",
+
+                        "Esse elemento não possui filhos."
+
+                    );
+
+
+                    return;
+
+                }
+
+
+                primeiro.classList.add("destacado");
+
+
+                mostrarResultado(
+
+                    "firstChild",
+
+                    "O primeiro filho de <strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> é <strong>" +
+                    nomeDoElemento(primeiro) +
+                    "</strong>.",
+
+                    "element.firstChild"
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* lastChild                          */
+            /* ================================= */
+
+            else if (propriedade === "lastChild") {
+
+
+                const filhos =
+                    obterFilhosDOM(selecionado);
+
+
+                const ultimo =
+                    filhos[filhos.length - 1];
+
+
+                if (!ultimo) {
+
+
+                    mostrarResultado(
+
+                        "lastChild",
+
+                        "Esse elemento não possui filhos."
+
+                    );
+
+
+                    return;
+
+                }
+
+
+                ultimo.classList.add("destacado");
+
+
+                mostrarResultado(
+
+                    "lastChild",
+
+                    "O último filho de <strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> é <strong>" +
+                    nomeDoElemento(ultimo) +
+                    "</strong>.",
+
+                    "element.lastChild"
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* nextSibling                        */
+            /* ================================= */
+
+            else if (propriedade === "nextSibling") {
+
+
+                const proximo =
+                    obterIrmaoProximo(selecionado);
+
+
+                if (!proximo) {
+
+
+                    mostrarResultado(
+
+                        "nextSibling",
+
+                        "<strong>" +
+                        nomeDoElemento(selecionado) +
+                        "</strong> não possui um próximo irmão."
+
+                    );
+
+
+                    return;
+
+                }
+
+
+                proximo.classList.add("destacado");
+
+
+                mostrarResultado(
+
+                    "nextSibling",
+
+                    "O próximo irmão de <strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> é <strong>" +
+                    nomeDoElemento(proximo) +
+                    "</strong>.",
+
+                    "element.nextSibling"
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* previousSibling                   */
+            /* ================================= */
+
+            else if (propriedade === "previousSibling") {
+
+
+                const anterior =
+                    obterIrmaoAnterior(selecionado);
+
+
+                if (!anterior) {
+
+
+                    mostrarResultado(
+
+                        "previousSibling",
+
+                        "<strong>" +
+                        nomeDoElemento(selecionado) +
+                        "</strong> não possui um irmão anterior."
+
+                    );
+
+
+                    return;
+
+                }
+
+
+                anterior.classList.add("destacado");
+
+
+                mostrarResultado(
+
+                    "previousSibling",
+
+                    "O irmão anterior de <strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> é <strong>" +
+                    nomeDoElemento(anterior) +
+                    "</strong>.",
+
+                    "element.previousSibling"
+
+                );
+
+
+            }
+
+
+            /* ================================= */
+            /* textContent                       */
+            /* ================================= */
+
+            else if (propriedade === "textContent") {
+
+
+                mostrarResultado(
+
+                    "textContent",
+
+                    "O conteúdo de texto de <strong>" +
+                    nomeDoElemento(selecionado) +
+                    "</strong> é:",
+
+                    "element.textContent"
+
+                );
+
+            }
+
+        }
+
+
+        /* ================================= */
+        /* ENCONTRAR PAI                     */
+        /* ================================= */
+
+        function obterPaiDOM(elemento) {
+
+
+            if (elemento.id === "container") {
+
+                return null;
+
+            }
+
+
+            if (
+                elemento.id === "p1" ||
+                elemento.id === "p2" ||
+                elemento.id === "p3"
+            ) {
+
+                return document.getElementById("container");
+
+            }
+
+
+            if (
+                elemento.id === "span" ||
+                elemento.id === "texto" ||
+                elemento.id === "botao"
+            ) {
+
+                return document.getElementById("p1");
+
+            }
+
+
+            return null;
+
+        }
+
+
+        /* ================================= */
+        /* ENCONTRAR FILHOS                  */
+        /* ================================= */
+
+        function obterFilhosDOM(elemento) {
+
+
+            if (elemento.id === "container") {
+
+                return [
+
+                    document.getElementById("p1"),
+
+                    document.getElementById("p2"),
+
+                    document.getElementById("p3")
+
+                ];
+
+            }
+
+
+            if (elemento.id === "p1") {
+
+                return [
+
+                    document.getElementById("span"),
+
+                    document.getElementById("texto"),
+
+                    document.getElementById("botao")
+
+                ];
+
+            }
+
+
+            return [];
+
+        }
+
+
+        /* ================================= */
+        /* PRÓXIMO IRMÃO                     */
+        /* ================================= */
+
+        function obterIrmaoProximo(elemento) {
+
+
+            if (elemento.id === "p1") {
+
+                return document.getElementById("p2");
+
+            }
+
+
+            if (elemento.id === "p2") {
+
+                return document.getElementById("p3");
+
+            }
+
+
+            if (elemento.id === "span") {
+
+                return document.getElementById("texto");
+
+            }
+
+
+            if (elemento.id === "texto") {
+
+                return document.getElementById("botao");
+
+            }
+
+
+            return null;
+
+        }
+
+
+        /* ================================= */
+        /* IRMÃO ANTERIOR                    */
+        /* ================================= */
+
+        function obterIrmaoAnterior(elemento) {
+
+
+            if (elemento.id === "p3") {
+
+                return document.getElementById("p2");
+
+            }
+
+
+            if (elemento.id === "p2") {
+
+                return document.getElementById("p1");
+
+            }
+
+
+            if (elemento.id === "botao") {
+
+                return document.getElementById("texto");
+
+            }
+
+
+            if (elemento.id === "texto") {
+
+                return document.getElementById("span");
+
+            }
+
+
+            return null;
+
+        }
+
+
+        /* ================================= */
+        /* MOSTRAR RESULTADO                 */
+        /* ================================= */
+
+        function mostrarResultado(
+            titulo,
+            mensagem,
+            codigo = ""
+        ) {
+
+
+            const resultado =
+                document.getElementById("resultado");
+
+
+            resultado.innerHTML =
+
+                "<h3>🔎 " +
+                titulo +
+                "</h3>" +
+
+                "<p>" +
+                mensagem +
+                "</p>" +
+
+                (
+                    codigo !== ""
+                        ?
+                        "<div class='codigo'>" +
+                        codigo +
+                        "</div>"
+                        :
+                        ""
+                );
+
+        }
+
+
+        /* ================================= */
+        /* ALTERAR TEXTCONTENT               */
+        /* ================================= */
+
+        function alterarTexto() {
+
+
+            const input =
+                document.getElementById("novoTexto");
+
+
+            const span =
+                document.getElementById("span");
+
+
+            if (input.value.trim() === "") {
+
+
+                alert("Digite algum texto primeiro!");
+
+
+                return;
+
+            }
+
+
+            /*
+             * Aqui usamos textContent de verdade.
+             */
+
+            span.textContent =
+                input.value;
+
+
+            /* Destaca o SPAN */
+
+            elementos.forEach(function(el) {
+
+                el.classList.remove("destacado");
+
+            });
+
+
+            span.classList.add("destacado");
+
+
+            mostrarResultado(
+
+                "textContent",
+
+                "O texto do SPAN foi alterado para: <strong>" +
+                input.value +
+                "</strong>.",
+
+                "span.textContent = \"" +
+                input.value +
+                "\""
+
+            );
+
+        }
+
+
+        /* ================================= */
+        /* RESETAR                           */
+        /* ================================= */
+
+        function resetar() {
+
+
+            elementos.forEach(function(el) {
+
+                el.classList.remove("selecionado");
+
+                el.classList.remove("destacado");
+
+            });
+
+
+            document.getElementById("span").textContent =
+                "SPAN";
+
+
+            document.getElementById("novoTexto").value =
+                "";
+
+
+            selecionado = null;
+
+
+            mostrarResultado(
+
+                "🔄 Demonstração reiniciada",
+
+                "Clique em um elemento da árvore para começar."
+
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
